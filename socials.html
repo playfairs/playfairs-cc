@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socials</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root {
+      --background-gradient: linear-gradient(135deg, silver, black, black, silver);
+      --text-color: white;
+    }
+
+    [data-theme="light"] {
+      --background-gradient: linear-gradient(135deg, silver, gray, lightgray, #e0e0e0);
+      --text-color: black;
+    }
+
+    body {
+      background: var(--background-gradient);
+      color: var(--text-color);
+      font-family: Playfair, Playfair-Display;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      text-align: center;
+    }
+
+    .content img {
+      border-radius: 50%;
+      max-width: 150px;
+      height: auto;
+    }
+
+    .content h1 {
+      font-size: 2rem;
+      margin: 20px 0;
+    }
+
+    .description {
+      font-size: 1rem;
+      margin: 10px 0;
+    }
+
+    .buttons a {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 15px;
+      font-size: 1rem;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      color: #000;
+      background: linear-gradient(135deg, silver, gray, lightgray, #e0e0e0);
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .buttons a:hover {
+      background: linear-gradient(135deg, silver, lightgray, #e0e0e0);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Modal Styles */
+    #confirmation-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 400px;
+      background: var(--background-gradient);
+      color: var(--text-color);
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      text-align: center;
+      display: none;
+      z-index: 10;
+    }
+
+    .modal-buttons a {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 15px;
+      font-size: 1rem;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .modal-visit {
+      background: linear-gradient(135deg, silver, gray, lightgray, #e0e0e0);
+      color: black;
+    }
+
+    .modal-cancel {
+      background: linear-gradient(135deg, red, black);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Theme Toggle Button -->
+  <img src="theme.svg" alt="Toggle Theme" class="theme-toggle" id="themeToggle">
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="content">
+      <img id="profile-img" src="https://cdn.discordapp.com/avatars/785042666475225109/a_8d1db94533ea5bb069eb011237f7cdbf.gif?size=1024" alt="Your Profile Picture">
+      <h1 id="username">playfairs</h1>
+      <p id="status" class="description"><span>/heresy</span></p>
+      <div class="buttons">
+        <a href="https://guns.lol/playfair" class="btn" data-url="https://guns.lol/playfair">Guns</a>
+        <a href="https://about.me/creepfully" class="btn" data-url="https://about.me/creepfully">About.me</a>
+        <a href="https://discord.com/users/785042666475225109" class="btn" data-url="https://discord.com/users/785042666475225109">Discord</a>
+        <a href="https://github.com/playfairs" class="btn" data-url="https://github.com/playfairs">GitHub</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmation-modal">
+    <p>Are you sure? <br> You are about to visit:</p>
+    <p id="modal-url" style="font-weight: bold; word-break: break-word;"></p>
+    <div class="modal-buttons">
+      <a href="#" class="modal-visit" id="modal-visit">Visit</a>
+      <a href="#" class="modal-cancel" id="modal-cancel">Cancel</a>
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle logic
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.body;
+
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      body.setAttribute("data-theme", savedTheme);
+    }
+
+    themeToggle.addEventListener("click", () => {
+      if (body.getAttribute("data-theme") === "light") {
+        body.removeAttribute("data-theme");
+        localStorage.setItem("theme", "dark");
+      } else {
+        body.setAttribute("data-theme", "light");
+        localStorage.setItem("theme", "light");
+      }
+    });
+
+    // Social links confirmation modal logic
+    const buttons = document.querySelectorAll('.buttons a');
+    const modal = document.getElementById('confirmation-modal');
+    const modalUrl = document.getElementById('modal-url');
+    const modalVisit = document.getElementById('modal-visit');
+    const modalCancel = document.getElementById('modal-cancel');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const url = button.getAttribute('data-url');
+        modalUrl.textContent = url;
+        modalVisit.href = url;
+        modal.style.display = 'block';
+      });
+    });
+
+    modalCancel.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

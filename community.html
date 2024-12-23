@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community - Heresy</title>
+  <style>
+    :root {
+      --background-gradient: linear-gradient(135deg, silver, black, black, silver);
+      --text-color: white;
+      --name-gradient: linear-gradient(135deg, white, gray, silver);
+    }
+
+    [data-theme="light"] {
+      --background-gradient: linear-gradient(135deg, silver, gray, lightgray, #e0e0e0);
+      --text-color: black;
+      --name-gradient: linear-gradient(135deg, black, gray, silver);
+    }
+
+    body {
+      background: var(--background-gradient);
+      color: var(--text-color);
+      font-family: Playfair, Playfair-Display;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: var(--name-gradient);
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 1.5rem;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 600px;
+      margin-top: 1rem;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 15px;
+      font-size: 1rem;
+      color: black;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      resize: none;
+    }
+
+    button {
+      display: inline-block;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #000;
+      background: linear-gradient(135deg, silver, gray, lightgray, #e0e0e0);
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: Playfair, Playfair-Display;
+    }
+
+    button:disabled {
+      background: linear-gradient(135deg, #d3d3d3, #c1c1c1, #b0b0b0);
+      cursor: not-allowed;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, silver, gray, lightgray, #e0e0e0);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .idea-card {
+      background: linear-gradient(135deg, #444444, #555555, #666666, #777777);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .idea-card p {
+      margin: 0;
+      flex-grow: 1;
+      font-size: 1rem;
+      text-align: left;
+    }
+
+    .idea-card button {
+      margin-left: 10px;
+      font-size: 0.9rem;
+      background: linear-gradient(135deg, silver, gray, lightgray, #e0e0e0);
+      color: black;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .idea-card button:hover {
+      background-color: #555555;
+      color: white;
+    }
+
+    .idea-card button.delete-btn {
+      color: red;
+    }
+
+    .idea-card button.delete-btn:hover {
+      background-color: #bb3333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Community</h1>
+  <div class="container">
+    <p>Share your ideas and suggestions anonymously below!</p>
+    <textarea id="ideaInput" rows="4" placeholder="Enter your idea..."></textarea>
+    <button id="submitIdea" disabled>Submit Idea</button>
+    <div id="ideasContainer" class="mt-4">
+      <!-- Ideas will appear here -->
+    </div>
+  </div>
+
+  <script>
+    // Backend endpoint for ideas (replace with your server URL)
+    const apiUrl = "https://your-backend.com/api/ideas";
+
+    const ideasContainer = document.getElementById("ideasContainer");
+    const submitIdea = document.getElementById("submitIdea");
+    const ideaInput = document.getElementById("ideaInput");
+
+    // Fetch and display ideas
+    async function loadIdeas() {
+      const response = await fetch(apiUrl);
+      const ideas = await response.json();
+      ideasContainer.innerHTML = "";
+      ideas.forEach(idea => {
+        const ideaElement = document.createElement("div");
+        ideaElement.className = "idea-card";
+        ideaElement.innerHTML = `
+          <p>${idea.text}</p>
+          <div>
+            <button onclick="likeIdea('${idea.id}')">👍 ${idea.likes}</button>
+            <button class="delete-btn" onclick="deleteIdea('${idea.id}')">🗑️</button>
+          </div>
+        `;
+        ideasContainer.appendChild(ideaElement);
+      });
+    }
+
+    // Submit new idea
+    submitIdea.addEventListener("click", async () => {
+      const text = ideaInput.value.trim();
+      if (!text) return alert("Please enter an idea!");
+      await fetch(apiUrl, { method: "POST", body: JSON.stringify({ text }), headers: { "Content-Type": "application/json" } });
+      ideaInput.value = ""; // Clear input box after submission
+      loadIdeas(); // Reload the ideas
+      submitIdea.disabled = true; // Disable submit button
+    });
+
+    // Enable submit button when textarea is not empty
+    ideaInput.addEventListener("input", () => {
+      submitIdea.disabled = ideaInput.value.trim() === ""; // Disable if input is empty
+    });
+
+    // Like an idea
+    async function likeIdea(id) {
+      await fetch(`${apiUrl}/${id}/like`, { method: "POST" });
+      loadIdeas();
+    }
+
+    // Delete an idea (admin-only feature)
+    async function deleteIdea(id) {
+      if (confirm("Are you sure you want to delete this idea?")) {
+        await fetch(`${apiUrl}/${id}`, { method: "DELETE" });
+        loadIdeas();
+      }
+    }
+
+    // Load ideas on page load
+    loadIdeas();
+  </script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heresy</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --background-gradient: linear-gradient(135deg, silver, black, black, silver);
+      --text-color: white;
+      --name-gradient: linear-gradient(135deg, white, gray, silver);
+    }
+
+    [data-theme="light"] {
+      --background-gradient: linear-gradient(135deg, silver, gray, lightgray, #e0e0e0);
+      --text-color: black;
+      --name-gradient: linear-gradient(135deg, black, gray, silver);
+    }
+
+    body {
+      background: var(--background-gradient);
+      color: var(--text-color);
+      font-family: Playfair, Playfair-Display;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .theme-toggle, .media-toggle {
+      position: absolute;
+      top: 20px;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+    }
+
+    .theme-toggle {
+      left: 20px;
+    }
+
+    .media-toggle {
+      left: 70px;
+    }
+
+    .profile-img-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .profile-img-container a {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .profile-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .buttons a {
+      display: block;
+      margin: 6px auto;
+      padding: 10px 15px;
+      font-size: 1rem;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      color: #000;
+      background: linear-gradient(135deg, silver, gray, lightgray, #e0e0e0);
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      font-family: Playfair, Playfair-Display;
+    }
+
+    .buttons a:hover {
+      background: linear-gradient(135deg, silver, gray, lightgray, #e0e0e0);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .social-link {
+      font-weight: bold;
+      text-decoration: italic;
+      color: inherit;
+    }
+
+    .social-link:hover {
+      text-decoration: underline;
+    }
+
+    .name {
+      background: var(--name-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .visit-counter {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 1rem;
+      font-family: Playfair, Playfair-Display;
+      background-color: black;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .dont-click {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      color: black;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+
+    .dont-click:hover {
+      text-decoration: underline;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal iframe {
+      width: 80%;
+      height: 80%;
+      border: none;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <img src="theme.svg" alt="Toggle Theme" class="theme-toggle" id="themeToggle">
+
+  <img src="mute.svg" alt="Toggle Media" class="media-toggle" id="mediaToggle">
+
+  <audio id="backgroundAudio" loop>
+    <source src="st.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="profile-img-container">
+    <a href="https://discord.com/oauth2/authorize?client_id=1284037026672279635&permissions=8&integration_type=0&scope=bot">
+      <img src="assets/heresy-pfp.gif" alt="Heresy PFP" class="profile-img">
+    </a>
+  </div>
+
+  <h1 class="font-bold tracking-tight text-7xl sm:text-7xl bg-clip-text text-transparent name">
+    HERESY
+  </h1>
+
+  <p class="description">
+    The newest version of Heresy, an all-in-one Discord Bot designed to manage and elevate your Discord Server experience. Coming soon, 𝐇𝐞𝐫𝐞𝐬𝐲 𝐕...<br><br>
+    Managed by <a href="socials.html" class="social-link">@playfairs</a>.
+  </p>
+
+  <div class="buttons">
+    <a href="https://discord.com/oauth2/authorize?client_id=1284037026672279635&permissions=8&integration_type=0&scope=bot" class="invite-btn">Invite</a>
+    <a href="https://discord.gg/heresy" class="discord-btn">Discord</a>
+    <a href="dashboard.html" class="dashboard-btn">Dashboard</a>
+  </div>
+
+  <div class="visit-counter" id="visitCounter"></div>
+
+  <a href="#" class="dont-click" id="dontClickLink">Don't click me...</a>
+
+  <div class="modal" id="videoModal">
+    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <span class="modal-close" id="modalClose">&times;</span>
+  </div>
+
+  <script>
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.body;
+
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      body.setAttribute("data-theme", savedTheme);
+    }
+
+    themeToggle.addEventListener("click", () => {
+      if (body.getAttribute("data-theme") === "light") {
+        body.removeAttribute("data-theme");
+        localStorage.setItem("theme", "dark");
+      } else {
+        body.setAttribute("data-theme", "light");
+        localStorage.setItem("theme", "light");
+      }
+    });
+
+    const mediaToggle = document.getElementById("mediaToggle");
+    const audio = document.getElementById("backgroundAudio");
+
+    mediaToggle.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+        mediaToggle.src = "play.svg";
+      } else {
+        audio.pause();
+        mediaToggle.src = "mute.svg";
+      }
+    });
+
+    fetch('/api/visit-count')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("visitCounter").textContent = `Visits: ${data.count}`;
+      })
+      .catch(error => console.error('Error fetching visit count:', error));
+
+    fetch('/api/increment-visit', {
+      method: 'POST'
+    }).catch(error => console.error('Error incrementing visit count:', error));
+
+    const dontClickLink = document.getElementById('dontClickLink');
+
+    dontClickLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ?autoplay=1";
+    });
+  </script>
+</body>
+</html>

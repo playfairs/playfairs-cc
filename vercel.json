@@ -1,0 +1,73 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/commands",
+      "destination": "/commands.html"
+    },
+    {
+      "source": "/community",
+      "destination": "/community.html"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/dashboard.html"
+    },
+    {
+      "source": "/socials",
+      "destination": "/socials.html"
+    },
+    {
+      "source": "/docs",
+      "destination": "/docs.html"
+    },
+    {
+      "source": "/hidden",
+      "destination": "/hidden.html"
+    },
+    {
+      "source": "/status",
+      "destination": "/status.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/commands.html",
+      "destination": "/commands",
+      "permanent": true
+    },
+    {
+      "source": "/community.html",
+      "destination": "/community",
+      "permanent": true
+    },
+    {
+      "source": "/dashboard.html",
+      "destination": "/dashboard",
+      "permanent": true
+    },
+    {
+      "source": "/socials.html",
+      "destination": "/socials",
+      "permanent": true
+    },
+    {
+      "source": "/docs.html",
+      "destination": "/docs",
+      "permanent": true
+    },
+    {
+      "source": "/hidden.html",
+      "destination": "/hidden",
+      "permanent": true
+    },
+    {
+      "source": "/status.html",
+      "destination": "/status",
+      "permanent": true
+    }
+  ]
+}

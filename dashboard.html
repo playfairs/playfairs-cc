@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heresy - Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, silver, gray, lightgray, #e0e0e0);
+      color: white;
+      font-family: Playfair, Playfair-Display;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      width: 100%;
+      background-color: #222222;
+      padding: 10px 0;
+      position: fixed;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .nav-btn {
+      background: linear-gradient(135deg, silver, gray, lightgray, #e0e0e0);
+      color: black;
+      text-decoration: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 10px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .nav-btn:hover {
+      background-color: #555555;
+      color: white;
+    }
+
+    /* Adjusted gradient for About Heresy button */
+    .collapsible {
+      background: linear-gradient(135deg, #333333, #444444, #555555, #666666);
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+      background-clip: text;
+      text-decoration: none;
+      border: none;
+      padding: 15px 20px;
+      font-size: 1.2rem;
+      text-align: center;
+      cursor: pointer;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 15px;
+      transition: background-color 0.3s;
+      font-family: Playfair, Playfair-Display;
+    }
+
+    .collapsible:hover {
+      background: linear-gradient(135deg, silver, gray, lightgray, #e0e0e0);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .content {
+      max-height: 0;
+      overflow: hidden;
+      background-color: #222222;
+      margin-top: 10px;
+      padding: 0 20px;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 15px;
+      transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+    }
+
+    .content.open {
+      max-height: 300px;
+      padding: 15px 20px;
+    }
+
+    .content p {
+      margin: 0;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="nav-buttons">
+      <a href="/" class="nav-btn">Landing Page</a>
+      <a href="commands.html" class="nav-btn">Commands</a>
+      <a href="community.html" class="nav-btn">Community</a>
+      <a href="docs.html" class="nav-btn">Docs</a>
+    </div>
+  </div>
+
+  <!-- Collapsible Section -->
+  <div class="collapsible-container">
+    <button class="collapsible">About Heresy (Will be redoing the whole site soon)</button>
+    <div class="content">
+      <p>
+        Heresy is your all-in-one Discord bot solution for managing and enhancing your server. With features ranging from moderation tools to user engagement options, Heresy makes your server management seamless and enjoyable.</b></b>
+        This Page and others are still a work in progress, and may change over time.
+      </p>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    const collapsible = document.querySelector('.collapsible');
+    const content = document.querySelector('.content');
+
+    collapsible.addEventListener('click', () => {
+      content.classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
